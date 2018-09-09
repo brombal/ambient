@@ -15,7 +15,7 @@ declare class Ambient<State> {
 
 interface AmbientSubscribeProps<State> {
   store: Ambient<State>;
-  on: AmbientStateMapper<State>;
+  on?: AmbientStateMapper<State>;
   children: AmbientSubscriberChild<State>;
 }
 
