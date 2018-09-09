@@ -13,14 +13,14 @@ $ npm install --save ambientjs
 
 - `new Ambient(initialState)`
 
-    Creates a new Ambient instance. This is your state manager object. 
+    Creates a new Ambient instance. This is your state manager object, or "store". 
     You will likely want to export the instance to use throughout your app.
     You can pass an initial state value to the constructor. 
     
     ```js
     const Ambient = require('ambient');
     
-    const ambient = new Ambient({ counter: 0 });
+    const store = new Ambient({ counter: 0 });
     ```
 
 - `ambient.state`
@@ -35,7 +35,7 @@ $ npm install --save ambientjs
     
     ```js
     function increaseCounter(count = 1) {
-    ambient.update(state => state.counter += count);
+      store.update(state => state.counter += count);
     }
     ```
   
@@ -58,14 +58,14 @@ The inside of the component is a method that receives the current state and retu
 a React node:
 
 ```jsx
- <Ambient.Subscribe store={ambient} on={state => state.counter}>
+ <Ambient.Subscribe store={store} on={state => state.counter}>
    {counter => (
      <div>Counter value: {counter}</div>
    )}
  </Ambient.Subscribe>
 ```
 
-`store` is the Ambient store you want to monitor.
+`store` is the Ambient store instance you want to monitor.
 
 `on` accepts a function which returns a "segment" of the store. This 
 allows you to only re-render when the segment updates. See `ambient.subscribe`
