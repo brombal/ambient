@@ -8,11 +8,11 @@ Ambient.Subscribe = class Subscribe extends React.Component {
   }
 
   componentDidMount() {
-    this.props.ambient.subscribe(this.onUpdate, this.props.on);
+    this.props.store.subscribe(this.onUpdate, this.props.on);
   }
 
   componentWillUnmount() {
-    this.props.ambient.unsubscribe(this.onUpdate);
+    this.props.store.unsubscribe(this.onUpdate);
   }
 
   onUpdate() {
@@ -20,6 +20,6 @@ Ambient.Subscribe = class Subscribe extends React.Component {
   }
 
   render() {
-    return this.props.children(this.props.ambient.state);
+    return this.props.children(this.props.store.state);
   }
 };

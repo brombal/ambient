@@ -1,6 +1,6 @@
 # Ambient
 
-Ambient is a global state manager. It manages a state object and allows you to
+Ambient is an incredibly simple global state manager. It manages a state object and allows you to
 subscribe to changes. It can also be used with React.
 
 ## Install
@@ -11,7 +11,7 @@ $ npm install --save ambientjs
 
 ## Usage
 
-- `constructor(initialState)`
+- `new Ambient(initialState)`
 
     Creates a new Ambient instance. This is your state manager object. 
     You will likely want to export the instance to use throughout your app.
@@ -61,8 +61,8 @@ a React node:
  <Ambient.Subscribe store={ambient} on={state => state.counter}>
    {counter => (
      <div>Counter value: {counter}</div>
-    )}
- </store.Subscribe>
+   )}
+ </Ambient.Subscribe>
 ```
 
 `store` is the Ambient store you want to monitor.
