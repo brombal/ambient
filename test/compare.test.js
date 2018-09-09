@@ -1,4 +1,5 @@
 const applyChanges = require('../src/applyChanges');
+const compare = require('../src/compare');
 
 test('compares no changes', () => {
   const state = { a: 1, b: 2 };
@@ -10,6 +11,28 @@ test('compares primitive values', () => {
   const state = { a: 1, b: 2 };
   const changes = applyChanges(state, state => state.a = 3);
   expect(changes).not.toBe(state);
+});
+
+test('compares falsey values', () => {
+  let a = null;
+  let b = null;
+  expect(compare(a, b)).toBe(b);
+
+  a = { a: 1 };
+  b = null;
+  expect(compare(a, b)).toBe(b);
+
+  a = null;
+  b = false;
+  expect(compare(a, b)).toBe(b);
+
+  a = null;
+  b = { a: 1 };
+  expect(compare(a, b)).toBe(b);
+
+  a = { a: null };
+  b = { a: 1 };
+  expect(compare(a, b)).toBe(b);
 });
 
 test('compares object values', () => {

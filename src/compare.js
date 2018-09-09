@@ -7,6 +7,7 @@
 module.exports = function compare(a, b) {
   if (a === b) return a;
   if (typeof a !== typeof b) return b;
+  if (!b || !a) return b;
   if (typeof a === 'object') {
     let changed = false;
     for (let key in a) {
