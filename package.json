@@ -1,0 +1,19 @@
+{
+  "name": "ambient",
+  "version": "1.0.0",
+  "description": "Global state management",
+  "main": "src/index.js",
+  "repository": "",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Alex Brombal",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "^23.5.0",
+    "react": "^16.5.0",
+    "react-dom": "^16.5.0",
+    "react-test-renderer": "^16.5.0"
+  }
+}
