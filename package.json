@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Global state management",
   "main": "src/index.js",
-  "repository": "",
+  "repository": "git@github.com:brombal/ambient.git",
   "scripts": {
     "test": "jest"
   },
