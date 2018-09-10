@@ -61,7 +61,7 @@ test('compares deeper object values', () => {
 });
 
 test('compares array values', () => {
-  const state = {
+  const state1 = {
     a: [1, 2, 3],
     b: {
       b1: 2,
@@ -70,20 +70,27 @@ test('compares array values', () => {
       b4: [4, [5.1, 5.2, 5.3], 6],
     }
   };
-  const changes = applyChanges(state, state => {
-    state.b.b3.push(7);
-    delete state.b.b4[2];
-  });
-  expect(changes).not.toBe(state);
-  expect(changes.a).toBe(state.a);
-  expect(changes.b).not.toBe(state.b);
-  expect(changes.b.b1).toBe(state.b.b1);
-  expect(changes.b.b2).toBe(state.b.b2);
-  expect(changes.b.b3).not.toBe(state.b.b3);
-  expect(changes.b.b3[1]).toBe(state.b.b3[1]);
+  const state2 = {
+    a: [1, 2, 3],
+    b: {
+      b1: 2,
+      b2: [4, 5, 6],
+      b3: [4, [5.1, 5.2, 5.3], 6, 7], // add value
+      b4: [4, [5.1, 5.2, 5.3]], // delete value
+    }
+  };
+  const changes = compare(state1, state2);
+  expect(changes).not.toBe(state1);
+  expect(changes.a).toBe(state1.a);
+  expect(changes.b).not.toBe(state1.b);
+  expect(changes.b.b1).toBe(state1.b.b1);
+  expect(changes.b.b2).toBe(state1.b.b2);
+  expect(changes.b.b3).not.toBe(state1.b.b3);
+  expect(changes.b.b3[1]).toBe(state1.b.b3[1]);
   expect(changes.b.b3[3]).toBe(7);
-  expect(changes.b.b4).not.toBe(state.b.b4);
-  expect(changes.b.b4[1]).toBe(state.b.b4[1]);
+  expect(changes.b.b4).not.toBe(state1.b.b4);
+  expect(changes.b.b4.length).toBe(2);
+  expect(changes.b.b4[1]).toBe(state1.b.b4[1]);
   expect(changes.b.b4[2]).toBeUndefined();
 });
 

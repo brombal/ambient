@@ -10,7 +10,7 @@ module.exports = function compare(a, b) {
   if (!b || !a) return b;
   if (typeof a === 'object') {
     let changed = false;
-    for (let key in a) {
+    for (let key in b) {
       const compared = compare(a[key], b[key]);
       if (compared !== a[key]) {
         b[key] = compared;
@@ -19,8 +19,8 @@ module.exports = function compare(a, b) {
         b[key] = a[key];
       }
     }
-    for (let key in b) {
-      if (!(key in a)) changed = true;
+    for (let key in a) {
+      if (!(key in b)) changed = true;
     }
     return changed ? b : a;
   } else {
