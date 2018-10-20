@@ -10,7 +10,7 @@ test('content changes when ambient state is updated', () => {
   let tree = component.toJSON();
   expect(tree).toBe('value: abc');
 
-  store.update(state => state.value = 'def');
+  store.update(state => { state.value = 'def'; });
 
   tree = component.toJSON();
   expect(tree).toBe('value: def');
@@ -23,12 +23,12 @@ test('content only updates when checker passes', () => {
   let tree = component.toJSON();
   expect(tree).toBe('value: 1');
 
-  store.update(state => state.b = 2);
+  store.update(state => { state.b = 2; });
 
   tree = component.toJSON();
   expect(tree).toBe('value: 1');
 
-  store.update(state => state.a = 2);
+  store.update(state => { state.a = 2; });
 
   tree = component.toJSON();
   expect(tree).toBe('value: 2');

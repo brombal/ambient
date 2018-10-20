@@ -4,7 +4,7 @@ type AmbientStateMapper<T> = (state: T) => any;
 type AmbientStateAction<T> = (state: T, prevState: T) => void;
 
 declare class Ambient<State> {
-  state: State;
+  get(): State;
   constructor(initialState?: State);
   subscribe(action: AmbientStateAction<State>, map?: AmbientStateMapper<State>): Promise<void>;
   unsubscribe(action: AmbientStateAction<State>): void;

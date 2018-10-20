@@ -1,7 +1,6 @@
 const React = require('react');
-const Ambient = require('./index');
 
-Ambient.Subscribe = class Subscribe extends React.Component {
+module.exports = class AmbientSubscribe extends React.Component {
   constructor(props) {
     super(props);
     this.onUpdate = this.onUpdate.bind(this);
@@ -20,6 +19,6 @@ Ambient.Subscribe = class Subscribe extends React.Component {
   }
 
   render() {
-    return this.props.children(this.props.store.state);
+    return this.props.children(this.props.store.get());
   }
 };

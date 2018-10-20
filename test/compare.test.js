@@ -37,7 +37,7 @@ test('compares falsey values', () => {
 
 test('compares object values', () => {
   const state = { a: { a1: 1 }, b: { b1: 2 } };
-  const changes = applyChanges(state, state => state.b.b1 = 3);
+  const changes = applyChanges(state, state => { state.b.b1 = 3; });
   expect(changes).not.toBe(state);
   expect(changes.a).toBe(state.a);
   expect(changes.b).not.toBe(state.b);
@@ -51,7 +51,7 @@ test('compares deeper object values', () => {
       b2: { b3: 4 }
     }
   };
-  const changes = applyChanges(state, state => state.b.b1 = 3);
+  const changes = applyChanges(state, state => { state.b.b1 = 3; });
   expect(changes).not.toBe(state);
   expect(changes.a).toBe(state.a);
   expect(changes.a.a1).toBe(state.a.a1);

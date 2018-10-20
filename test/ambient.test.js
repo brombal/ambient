@@ -2,7 +2,7 @@ const Ambient = require('../src/index');
 
 test('initial state', () => {
   const ambient = new Ambient({ a: 1 });
-  expect(ambient.state.a).toBe(1);
+  expect(ambient.get().a).toBe(1);
 });
 
 test('updater', () => {
@@ -10,7 +10,7 @@ test('updater', () => {
   ambient.update(state => {
     state.a = 2;
   });
-  expect(ambient.state.a).toBe(2);
+  expect(ambient.get().a).toBe(2);
 });
 
 test('subscription', () => {

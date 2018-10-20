@@ -23,19 +23,22 @@ $ npm install --save ambientjs
     const store = new Ambient({ counter: 0 });
     ```
 
-- `ambient.state`
+- `ambient.get()`
 
-    Gets the current value (the "state") of the Ambient store.
+    Gets the current value (the "state") of the Ambient store. Note that this clones the state 
+    object, and while it is as efficient as possible, should be used with care.
 
 - `ambient.update(updater)`
     
     Updates the store's value. The callback method is invoked immediately and receives 
     a "draft" copy of the store. In this method you can modify the draft state however
-    you wish. Just modify the object—don't return anything (return values are discarded).
+    you wish. You can modify the object directly (recommended) or return a value which will replace
+    the current state. Be cautious using arrow shorthand syntax: if you don't wrap the expression
+    in curly braces, the expression's value will be returned and replace the current state.
     
     ```js
     function increaseCounter(count = 1) {
-      store.update(state => state.counter += count);
+      store.update(state => { state.counter += count; });
     }
     ```
   

@@ -1,4 +1,5 @@
 const compare = require('./compare');
+const clone = require('./clone');
 const applyChanges = require('./applyChanges');
 
 module.exports = class Ambient {
@@ -8,8 +9,8 @@ module.exports = class Ambient {
     this.currentState = initialState;
   }
 
-  get state() {
-    return this.currentState;
+  get() {
+    return clone(this.currentState);
   }
 
   set(nextState, quiet = false) {
