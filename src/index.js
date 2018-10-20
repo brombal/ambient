@@ -2,7 +2,7 @@ const compare = require('./compare');
 const clone = require('./clone');
 const applyChanges = require('./applyChanges');
 
-module.exports = class Ambient {
+module.exports.default = module.exports.Ambient = class Ambient {
   constructor(initialState = {}) {
     this.listeners = [];
     this.initialState = initialState;
