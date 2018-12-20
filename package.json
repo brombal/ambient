@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "repository": "git@github.com:brombal/ambient.git",
   "scripts": {
+    "build": "webpack --mode production && tsc -p ./ --declaration --emitDeclarationOnly --outFile dist/index.js",
     "test": "jest && jest-coverage-badges"
   },
   "author": "Alex Brombal",

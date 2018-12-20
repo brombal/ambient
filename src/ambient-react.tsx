@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Ambient, { AmbientStateMapper } from "./index";
+import Ambient, { AmbientStateMapper } from "./ambient";
 
 interface AmbientSubscribeProps<State> {
   store: Ambient<State>;
@@ -7,7 +7,7 @@ interface AmbientSubscribeProps<State> {
   children?: (state: State) => React.ReactNode;
 }
 
-export default class AmbientSubscriber<State> extends React.Component<AmbientSubscribeProps<State>> {
+export class AmbientSubscriber<State> extends React.Component<AmbientSubscribeProps<State>> {
   componentDidMount() {
     this.props.store.subscribe(this.onUpdate, this.props.on);
   }
@@ -23,7 +23,7 @@ export default class AmbientSubscriber<State> extends React.Component<AmbientSub
   render() {
     return this.props.children(this.props.store.get());
   }
-};
+}
 
 export const withAmbient = (store, on) => (Component) => (props) => {
   return (

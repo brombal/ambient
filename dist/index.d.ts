@@ -1,3 +1,4 @@
+/// <reference types="react" />
 declare module "compare" {
     /**
      * Compares a and b for differences.
@@ -17,9 +18,26 @@ declare module "applyChanges" {
      * If `changer` mutates the draft copy, any changes made are applied back to `object`
      * selectively so that equivalent values remain "identical", but changed values do not.
      */
-    export default function applyChanges<T>(object: T, changer: (T: any) => T): T;
+    export default function applyChanges<T>(object: T, changer: (T: any) => any): T;
 }
-declare module "index" {
+declare module "ambient-react" {
+    import * as React from 'react';
+    import Ambient, { AmbientStateMapper } from "ambient";
+    interface AmbientSubscribeProps<State> {
+        store: Ambient<State>;
+        on?: AmbientStateMapper<State>;
+        children?: (state: State) => React.ReactNode;
+    }
+    export class AmbientSubscriber<State> extends React.Component<AmbientSubscribeProps<State>> {
+        componentDidMount(): void;
+        componentWillUnmount(): void;
+        onUpdate: () => void;
+        render(): React.ReactNode;
+    }
+    export const withAmbient: (store: any, on: any) => (Component: any) => (props: any) => JSX.Element;
+}
+declare module "ambient" {
+    export { AmbientSubscriber, withAmbient } from "ambient-react";
     export type AmbientStateMapper<T> = (state: T) => any;
     type AmbientStateAction<T> = (state: T, prevState: T) => void;
     export default class Ambient<State> {
@@ -31,7 +49,7 @@ declare module "index" {
         }[];
         constructor(initialState?: State);
         get(): State;
-        set(nextState: any, quiet?: boolean): void;
+        private set;
         subscribe(action: AmbientStateAction<State>, map?: AmbientStateMapper<State>): void;
         unsubscribe(action: AmbientStateAction<State>): void;
         reset(): void;

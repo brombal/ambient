@@ -1,6 +1,7 @@
 import compare from './compare';
 import clone from './clone';
 import applyChanges from './applyChanges';
+export { AmbientSubscriber, withAmbient } from './ambient-react';
 
 export type AmbientStateMapper<T> = (state: T) => any;
 type AmbientStateAction<T> = (state: T, prevState: T) => void;
