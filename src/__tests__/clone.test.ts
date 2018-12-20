@@ -1,4 +1,4 @@
-const clone = require('../src/clone');
+import clone from '../clone';
 
 test('clones primitive', () => {
   const value = clone('a');

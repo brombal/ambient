@@ -1,0 +1,18 @@
+{
+  "files": [
+    "src/index.ts"
+  ],
+  "compilerOptions": {
+    "outFile": "./dist/index.js",
+    "sourceMap": true,
+    "noImplicitAny": false,
+    "module": "esnext",
+    "target": "esnext",
+    "jsx": "react",
+    "moduleResolution": "node",
+    "declaration": true,
+    "lib": [
+      "es2015"
+    ]
+  }
+}

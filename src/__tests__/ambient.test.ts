@@ -1,4 +1,4 @@
-const Ambient = require('../src/index');
+import Ambient from '../index';
 
 test('initial state', () => {
   const ambient = new Ambient({ a: 1 });
@@ -24,7 +24,7 @@ test('subscription', () => {
 });
 
 test('deep subscription', () => {
-  const ambient = new Ambient({ a: { a1: 1 }, b: { b1: 1 }, c: [1, 2, 3] });
+  const ambient = new Ambient({ a: { a1: 1 }, b: { b1: 1 }, c: [1, 2, 3] } as any);
   const subscriptionB = jest.fn();
   const subscriptionB1 = jest.fn();
   const subscriptionC = jest.fn();

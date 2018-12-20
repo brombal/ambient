@@ -1,10 +1,10 @@
 /**
  * Compares a and b for differences.
- * If a and b are equivalent, a is returned.
- * If any properties of a and b are different, b is returned.
- * However, all properties of b will be deep-checked for equality and any equal values will remain identical.
+ * If a and b are identical (===) or equivalent (recursive deep object/array comparison), a is returned.
+ * If any properties of a and b are different, `b` is returned. However, all properties of `b` will be compared against
+ * `a` using this method.
  */
-module.exports = function compare(a, b) {
+export default function compare(a: any, b: any): any {
   if (a === b) return a;
   if (typeof a !== typeof b) return b;
   if (!b || !a) return b;

@@ -1,5 +1,5 @@
-const applyChanges = require('../src/applyChanges');
-const compare = require('../src/compare');
+import applyChanges from '../applyChanges';
+import compare from '../compare';
 
 test('compares no changes', () => {
   const state = { a: 1, b: 2 };
@@ -103,7 +103,7 @@ test('compares changing object keys', () => {
       b3: { b31: { b311: 1 } },
       b4: { b41: { b411: 1 }, b42: 1 },
     }
-  };
+  } as any;
   const changes = applyChanges(state, state => {
     state.b.b3.b32 = 6;
     delete state.b.b4.b42;
