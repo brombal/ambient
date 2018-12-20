@@ -12,7 +12,8 @@
     "moduleResolution": "node",
     "declaration": true,
     "lib": [
-      "es2015"
+      "es2015",
+      "dom"
     ]
   }
 }

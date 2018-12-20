@@ -17,7 +17,7 @@ export default class Ambient<State> {
     return clone(this.currentState);
   }
 
-  set(nextState, quiet = false) {
+  private set(nextState, quiet) {
     const prevState = this.currentState;
     this.currentState = nextState;
     if (!quiet) {

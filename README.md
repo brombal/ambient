@@ -1,5 +1,12 @@
 # Ambient
 
+[license-url]: https://opensource.org/licenses/MIT
+[license-image]: https://img.shields.io/npm/l/make-coverage-badge.svg
+[coverage-badge-green]: ./coverage/badge-statements.svg
+
+[![License][license-image]][license-url]
+![Coverage][coverage-badge-green]
+
 Ambient is an incredibly simple global state manager. It manages a state object and allows you to
 subscribe to changes. It can also be used with React.
 

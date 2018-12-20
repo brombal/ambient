@@ -41,6 +41,8 @@ test('content only updates when checker passes', () => {
 
   tree = component.toJSON();
   expect(tree).toBe('value: 2');
+
+  component.unmount();
 });
 
 test('HOC', () => {
