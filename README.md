@@ -129,7 +129,7 @@ There are two ways to use Ambient with React: the `AmbientSubscriber` wrapper co
 
 #### `<AmbientSubscriber>` wrapper component
 
-The `AmbientSubscriber` wrapper component allows you to create an element that will re-render its 
+The `AmbientSubscriber` wrapper component creates an element that will re-render its 
 contents when the state changes. This is slightly simpler to use than the higher-order component,
 but it doesn't work with your component's lifecycle methods (e.g. `componentDidUpdate` will not be 
 called because of a change the in Ambient state).
@@ -145,26 +145,28 @@ a React node:
  </AmbientSubscriber>
 ```
 
-The child function will be invoked any time the state updates according to the `on` 
+The child function will be invoked whenever the state updates according to the `on` 
 comparison callback.
 
-The `store` prop is the Ambient store instance you want to monitor.
+The `store` prop is the Ambient store instance you want to subscribe to.
 
 The `on` prop is the comparison function that determines which part of the store to watch for changes. 
 See [on comparing Ambient states](#on-comparing-ambient-states) for details.
 
+
 #### `withAmbient` higher-order component
 
-`withAmbient` allows you to pass the Ambient state as a prop to your component, allowing you to
-react to changes using `componentDidUpdate` and other lifecycle methods. 
+`withAmbient` is a higher-order component that passes the Ambient state as a prop to your 
+component, allowing you to respond to changes using `componentDidUpdate` and other lifecycle 
+methods. 
 
-- `withAmbient(ambient: Ambient, compare: (state) => any)`
+- `withAmbient(ambient: Ambient, compare: (state) => any)(Component)`
 
     This is a typical higher-order component function that accepts two parameters: the Ambient
     store instance, and a comparison method. Your component 
-    will receive the entire state object as a prop, but will only be re-rendered when the 
-    comparison function returns a non-equivalent value. (see 
-    [on comparing Ambient states](#on-comparing-ambient-states) for details)
+    will receive the entire state object as `this.props.ambient`, but will only be re-rendered 
+    when the comparison function returns a non-equivalent value (see 
+    [on comparing Ambient states](#on-comparing-ambient-states) for details).
 
 
 ### Using without React
@@ -202,7 +204,7 @@ calls for a "comparison" method, you should provide a function that accepts the 
 and returns only the part for which you wish to subscribe or react to changes.
 
 ```typescript jsx
-ambient.subscribe(handleChange, state => state.some.property)
+ambient.subscribe(state => { /* do something */ }, state => state.some.property)
 
 // or
 
