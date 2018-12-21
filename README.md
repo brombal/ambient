@@ -35,10 +35,11 @@ $ npm install --save ambientjs
 
 ## Example
 
-This example demonstrates usage with the `AmbientSubscriber` wrapper component. 
-See [more examples](#more-examples) below for other ways to use Ambient!
-
-Also, take a look at the [Codepen](https://codepen.io/brombal/pen/gZmeYL) for a working sample.
+This example demonstrates usage with the `AmbientSubscriber` wrapper component, similar to how
+the React context API works.
+ 
+See [more examples](#more-examples) below for additional ways to use Ambient,
+or take a look at the [Codepen](https://codepen.io/brombal/pen/gZmeYL) for a working sample.
  
 ```typescript jsx
 import Ambient, { AmbientSubscriber } from 'ambient';
