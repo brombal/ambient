@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Ambient from '../ambient';
-import AmbientSubscriber, { withAmbient } from '../ambient-react';
+import { AmbientSubscriber, withAmbient } from '../ambient-react';
 import * as renderer from 'react-test-renderer';
 
 
