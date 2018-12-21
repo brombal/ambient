@@ -1,25 +1,36 @@
 const path = require('path');
 
-module.exports = (env, argv = {}) => ({
-  entry: './src/ambient.ts',
+module.exports = {
+  entry: './src/browser.ts',
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, 'dist/browser'),
     filename: 'index.js',
   },
-  devtool: argv.mode === 'development' ? 'eval-source-map' : 'none',
+  devtool: 'source-map',
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    extensions: ['.ts', '.tsx', '.js'],
   },
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        use: ['ts-loader']
+        use: [{
+          loader: 'ts-loader',
+          options: {
+            compilerOptions: {
+              "target": "es5",
+              "module": "commonjs",
+              "lib": [
+                "es2015",
+                "dom"
+              ]
+            }
+          }
+        }]
       },
     ]
   },
-  externals : {
-    react: 'react',
-    reactDom: 'react-dom'
+  externals: {
+    react: 'React'
   }
-});
+};

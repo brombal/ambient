@@ -3,15 +3,12 @@
     "src/ambient.ts"
   ],
   "compilerOptions": {
-    "sourceMap": true,
     "noImplicitAny": false,
-    "module": "esnext",
-    "target": "esnext",
+    "sourceMap": true,
     "jsx": "react",
     "moduleResolution": "node",
     "lib": [
-      "es2015",
-      "dom"
+      "es2015"
     ]
   }
 }
