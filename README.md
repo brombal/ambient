@@ -36,6 +36,8 @@ $ npm install --save ambientjs
 
 This example demonstrates usage with the `AmbientSubscriber` wrapper component. 
 See [more examples](#more-examples) below for other ways to use Ambient!
+
+Also, take a look at the [Codepen](https://codepen.io/brombal/pen/gZmeYL) for a working sample.
  
 ```typescript jsx
 import Ambient, { AmbientSubscriber } from 'ambient';
@@ -214,6 +216,8 @@ if they contain the same key/value pairs or entries).
 
 
 ## Examples
+
+Take a look at the [Codepen](https://codepen.io/brombal/pen/gZmeYL) for a working sample.
 
 ### React wrapper component (`AmbientSubscriber`)
 
