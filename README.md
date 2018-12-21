@@ -7,8 +7,9 @@
 [![License][license-image]][license-url]
 ![Coverage][coverage-badge-green]
 
-Ambient is an incredibly simple global state manager. It manages a state object and allows you to
-subscribe to changes. It can also be used with React.
+Ambient is a simple global state manager for React (or not). 
+It manages a single state object, allowing you to make and subscribe to changes, with options
+for both higher-order components (like Redux) and wrapper elements (like React context).
 
 - [Installation](#installation)
 - [Example](#example)
