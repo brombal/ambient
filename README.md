@@ -25,6 +25,8 @@ for both higher-order components (like Redux) and wrapper elements (like React c
   - [React wrapper component (AmbientSubscriber)](#react-wrapper-component-ambientsubscriber)
   - [React higher-order component (withAmbient)](#react-higher-order-component)
   - [Manual API (no React)](#manual-api-no-react)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Installation
 
@@ -308,3 +310,17 @@ ambient.update(state => {
   state.user.name = "Example Smith";
 });
 ```
+
+
+## Contributing
+
+Please feel free to fork, clone, modify, or submit PRs and bug tickets on 
+[github](https://github.com/brombal/ambient).
+
+All useful build scripts are located in the package.json file.
+
+## License
+
+Copyright &copy; 2018 Alex Brombal 
+
+Licensed under [MIT](https://github.com/brombal/ambient/blob/master/LICENSE).
