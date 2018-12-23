@@ -68,6 +68,7 @@ test('compares array values', () => {
       b2: [4, 5, 6],
       b3: [4, [5.1, 5.2, 5.3], 6],
       b4: [4, [5.1, 5.2, 5.3], 6],
+      b5: [4, [5.1, 5.2, 5.3], 6],
     }
   };
   const state2 = {
@@ -77,6 +78,7 @@ test('compares array values', () => {
       b2: [4, 5, 6],
       b3: [4, [5.1, 5.2, 5.3], 6, 7], // add value
       b4: [4, [5.1, 5.2, 5.3]], // delete value
+      b5: [4, [5.1, 5.2, 5.3], 7], // change value
     }
   };
   const changes = compare(state1, state2);
@@ -92,6 +94,9 @@ test('compares array values', () => {
   expect(changes.b.b4.length).toBe(2);
   expect(changes.b.b4[1]).toBe(state1.b.b4[1]);
   expect(changes.b.b4[2]).toBeUndefined();
+  expect(changes.b.b5).not.toBe(state1.b.b5);
+  expect(changes.b.b5[1]).toBe(state1.b.b5[1]);
+  expect(changes.b.b5[2]).not.toBe(state1.b.b5[2]);
 });
 
 test('compares changing object keys', () => {
