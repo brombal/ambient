@@ -1,8 +1,10 @@
 import compare from './compare';
 import clone from './clone';
 import applyChanges from './applyChanges';
-export { AmbientSubscriber, withAmbient } from './ambient-react';
-export default class Ambient {
+export default function createAmbient(state = {}) {
+    return new Ambient(state);
+}
+export class Ambient {
     constructor(initialState = {}) {
         this.initialState = initialState;
         this.listeners = [];
@@ -23,10 +25,10 @@ export default class Ambient {
             });
         }
     }
-    subscribe(action, map = null) {
+    on(map, action) {
         this.listeners.push({ map, action });
     }
-    unsubscribe(action) {
+    off(action) {
         this.listeners = this.listeners.filter(fn => fn.action !== action);
     }
     reset() {
@@ -40,12 +42,12 @@ export default class Ambient {
     /**
      * Returns a Promise that resolves when `check` returns anything other than undefined. `check` is called any time the
      * state updates and changes according to `map`.
+     * @param map The method that determines if the state has updated. See Ambient#on().
      * @param check The method to call when the state updates. If it returns any value other than undefined, the Promise will resolve.
-     * @param map The method that determines if the state has updated. See Ambient#subscribe().
      */
-    awaiter(check, map) {
+    awaiter(map, check) {
         return new Promise(resolve => {
-            this.subscribe(state => {
+            this.on(state => {
                 const result = check(state);
                 if (result !== undefined)
                     resolve(result);

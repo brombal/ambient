@@ -1,15 +1,15 @@
-import Ambient from '../ambient';
+import createAmbient from "../ambient";
 
 test('initial state', () => {
-  const ambient1 = new Ambient();
+  const ambient1 = createAmbient();
   expect(ambient1.get()).toEqual({});
 
-  const ambient2 = new Ambient({ a: 1 });
+  const ambient2 = createAmbient({ a: 1 });
   expect(ambient2.get().a).toBe(1);
 });
 
 test('updater', () => {
-  const ambient = new Ambient({ a: 1 });
+  const ambient = createAmbient({ a: 1 });
   ambient.update(state => {
     state.a = 2;
   });
@@ -17,9 +17,9 @@ test('updater', () => {
 });
 
 test('subscribe & unsubscribe', () => {
-  const ambient = new Ambient({ a: 1 });
+  const ambient = createAmbient({ a: 1 });
   const subscription = jest.fn();
-  ambient.subscribe(subscription);
+  ambient.on(state => state, subscription);
   ambient.update(state => {
     state.a = 2;
   });
@@ -35,7 +35,7 @@ test('subscribe & unsubscribe', () => {
   }, true);
   expect(subscription).toHaveBeenCalledTimes(1);
 
-  ambient.unsubscribe(subscription);
+  ambient.off(subscription);
   ambient.update(state => {
     state.a = 4;
   });
@@ -43,7 +43,7 @@ test('subscribe & unsubscribe', () => {
 });
 
 test('reset', () => {
-  const ambient = new Ambient({ a: 1 });
+  const ambient = createAmbient({ a: 1 });
   ambient.update(state => {
     state.a = 2;
   });
@@ -53,13 +53,13 @@ test('reset', () => {
 });
 
 test('deep subscription', () => {
-  const ambient = new Ambient({ a: { a1: 1 }, b: { b1: 1 }, c: [1, 2, 3] } as any);
+  const ambient = createAmbient({ a: { a1: 1 }, b: { b1: 1 }, c: [1, 2, 3] } as any);
   const subscriptionB = jest.fn();
   const subscriptionB1 = jest.fn();
   const subscriptionC = jest.fn();
-  ambient.subscribe(subscriptionB, state => state.b);
-  ambient.subscribe(subscriptionB1, state => state.b.b1);
-  ambient.subscribe(subscriptionC, state => state.c);
+  ambient.on(state => state.b, subscriptionB);
+  ambient.on(state => state.b.b1, subscriptionB1);
+  ambient.on(state => state.c, subscriptionC);
 
   ambient.update(state => { state.a = 2; });
   expect(subscriptionB).not.toHaveBeenCalled();
@@ -83,7 +83,7 @@ test('deep subscription', () => {
 });
 
 test('awaiter', (done) => {
-  const ambient = new Ambient({ a: 1 });
+  const ambient = createAmbient({ a: 1 });
   ambient.awaiter(state => state.a === 3 ? true : undefined, state => state.a)
     .then(() => {
       done();

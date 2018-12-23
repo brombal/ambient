@@ -3,9 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var compare_1 = require("./compare");
 var clone_1 = require("./clone");
 var applyChanges_1 = require("./applyChanges");
-var ambient_react_1 = require("./ambient-react");
-exports.AmbientSubscriber = ambient_react_1.AmbientSubscriber;
-exports.withAmbient = ambient_react_1.withAmbient;
+function createAmbient(state) {
+    if (state === void 0) { state = {}; }
+    return new Ambient(state);
+}
+exports.default = createAmbient;
 var Ambient = /** @class */ (function () {
     function Ambient(initialState) {
         if (initialState === void 0) { initialState = {}; }
@@ -29,11 +31,10 @@ var Ambient = /** @class */ (function () {
             });
         }
     };
-    Ambient.prototype.subscribe = function (action, map) {
-        if (map === void 0) { map = null; }
+    Ambient.prototype.on = function (map, action) {
         this.listeners.push({ map: map, action: action });
     };
-    Ambient.prototype.unsubscribe = function (action) {
+    Ambient.prototype.off = function (action) {
         this.listeners = this.listeners.filter(function (fn) { return fn.action !== action; });
     };
     Ambient.prototype.reset = function () {
@@ -48,13 +49,13 @@ var Ambient = /** @class */ (function () {
     /**
      * Returns a Promise that resolves when `check` returns anything other than undefined. `check` is called any time the
      * state updates and changes according to `map`.
+     * @param map The method that determines if the state has updated. See Ambient#on().
      * @param check The method to call when the state updates. If it returns any value other than undefined, the Promise will resolve.
-     * @param map The method that determines if the state has updated. See Ambient#subscribe().
      */
-    Ambient.prototype.awaiter = function (check, map) {
+    Ambient.prototype.awaiter = function (map, check) {
         var _this = this;
         return new Promise(function (resolve) {
-            _this.subscribe(function (state) {
+            _this.on(function (state) {
                 var result = check(state);
                 if (result !== undefined)
                     resolve(result);
@@ -63,6 +64,6 @@ var Ambient = /** @class */ (function () {
     };
     return Ambient;
 }());
-exports.default = Ambient;
+exports.Ambient = Ambient;
 ;
 //# sourceMappingURL=ambient.js.map

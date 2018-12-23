@@ -1,15 +1,15 @@
 import * as React from 'react';
-import Ambient from '../ambient';
-import { AmbientSubscriber, withAmbient } from '../ambient-react';
+import createAmbient from '../ambient';
+import '../react';
 import * as renderer from 'react-test-renderer';
 
 
 test('content changes when ambient state is updated', () => {
-  const store = new Ambient({ value: 'abc' });
+  const store = createAmbient({ value: 'abc' });
   const component = renderer.create(
-    <AmbientSubscriber store={store}>
+    <store.react to={state => state}>
       {state => `value: ${state.value}`}
-    </AmbientSubscriber>
+    </store.react>
   );
 
   let tree = component.toJSON();
@@ -22,11 +22,11 @@ test('content changes when ambient state is updated', () => {
 });
 
 test('content only updates when checker passes', () => {
-  const store = new Ambient({ a: 1, b: 1 });
+  const store = createAmbient({ a: 1, b: 1 });
   const component = renderer.create(
-    <AmbientSubscriber store={store} on={state => state.a}>
+    <store.react to={state => state.a}>
       {state => `value: ${state.b}`}
-    </AmbientSubscriber>
+    </store.react>
   );
 
   let tree = component.toJSON();
@@ -46,11 +46,11 @@ test('content only updates when checker passes', () => {
 });
 
 test('HOC', () => {
-  const store = new Ambient({ a: 1, b: 2 });
+  const store = createAmbient({ a: 1, b: 2 });
 
   const mockFn = jest.fn();
 
-  const MyAmbientListener = withAmbient(store, state => state.a)(
+  const MyAmbientListener = store.connect(state => state.a)(
     class MyComponent extends React.Component<any> {
       componentDidUpdate = mockFn;
 
@@ -67,9 +67,7 @@ test('HOC', () => {
   );
 
   const component = renderer.create(
-    <MyAmbientListener foo="bar">
-      {state => `value: ${state.b}`}
-    </MyAmbientListener>
+    <MyAmbientListener foo="bar" />
   );
 
   expect(mockFn).toHaveBeenCalledTimes(0);

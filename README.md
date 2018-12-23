@@ -16,14 +16,14 @@ for both higher-order components (like Redux) and wrapper elements (like React c
 - [Guide](#guide)
   - [Creating an Ambient store](#creating-an-ambient-store)
   - [Updating the state](#updating-the-state)
-  - [Using with React](#usage-with-react)
-    - [`<AmbientSubscriber>` wrapper component](#ambientsubscriber-wrapper-component)
-    - [`withAmbient` higher-order component](#withambient-higher-order-component)
+  - [Using with React](#using-with-react)
+    - [`<ambient.react>` wrapper component](#ambient-react-wrapper-component)
+    - [`ambient.connect` higher-order component](#ambient-connect-higher-order-component)
   - [Using without React](#using-without-react)
   - [On comparing Ambient states](#on-comparing-ambient-states)
 - [More examples](#more-examples)
-  - [React wrapper component (AmbientSubscriber)](#react-wrapper-component-ambientsubscriber)
-  - [React higher-order component (withAmbient)](#react-higher-order-component)
+  - [React wrapper component (`<ambient.react>`)](#react-wrapper-component-ambient-react)
+  - [React higher-order component (`ambient.connect`)](#react-higher-order-component-ambient-connect)
   - [Manual API (no React)](#manual-api-no-react)
 - [Contributing](#contributing)
 - [License](#license)
@@ -37,14 +37,14 @@ $ npm install --save ambientjs
 
 ## Example
 
-This example demonstrates usage with the `AmbientSubscriber` wrapper component, similar to how
+This example demonstrates usage with the `<ambient.react>` wrapper component, similar to how
 the React context API works.
  
 See [more examples](#more-examples) below for additional ways to use Ambient,
-or take a look at the [Codepen](https://codepen.io/brombal/pen/gZmeYL) for a working sample.
+or take a look at the [Codepen](https://codepen.io/brombal/pen/aPWEzv) for a working sample.
  
 ```typescript jsx
-import Ambient, { AmbientSubscriber } from 'ambient';
+import Ambient from 'ambient';
 
 // Create an Ambient instance
 const ambient = new Ambient({
@@ -63,14 +63,14 @@ function increaseCounter() {
 class MyComponent extends React.Component {
   render() {
     return (
-      <AmbientSubscriber store={ambient} on={state => state.counter}>
+      <ambient.react to={state => state.counter}>
         {state => (
           <div>
             Counter value: {state.counter}
             <button onClick={() => increaseCounter()}>Increase!</button>
           </div>
         )}
-      </AmbientSubscriber>
+      </ambient.react>
     )
   }
 }
@@ -81,24 +81,25 @@ class MyComponent extends React.Component {
 
 ### Creating an Ambient store
 
-An instance of `Ambient` represents the "store." This is the state management object which
-allows you to modify the state, subscribe to changes in the state, and get the current state value.
+An instance of `Ambient` represents the **store**. The store is the state management object with 
+which you can modify the state, subscribe to changes in the state, and get the current state value.
 
-While nothing stops you from creating multiple Ambient instances, this is not a normal use case.
-Your app will usually only contain a single instance, and many of the examples below rely on only
-having a single instance.
+You may use a single store in your application to contain all your data in one place, or you might
+create multiple stores to segment unrelated data. Each approach has its advantages and one may work
+better for your application.
 
-- `new Ambient(initialState)`
+- `createAmbient(initialState)`
 
     Creates a new Ambient instance.
     You will likely want to export the instance to use throughout your app.
     You can pass an initial state value to the constructor. 
     
     ```js
-    import Ambient from 'ambient'; // TypeScript 
-    const Ambient = require('ambient'); // JavaScript
+    import createAmbient from 'ambient'; // TypeScript 
+    // or
+    const createAmbient = require('ambient'); // JavaScript
     
-    const ambient = new Ambient({ counter: 0 });
+    const ambient = createAmbient({ counter: 0 });
     ```
 
 ### Updating the state
@@ -112,9 +113,7 @@ having a single instance.
     will be returned and will replace the current state.*
     
     ```js
-    import Ambient from 'ambient';  
-        
-    const ambient = new Ambient({ counter: 0 });
+    const ambient = createAmbient({ counter: 0 });
       
     function increaseCounter(count = 1) {
       ambient.update(state => { state.counter += count; });
@@ -126,12 +125,12 @@ having a single instance.
   
 ### Using with React
 
-There are two ways to use Ambient with React: the `AmbientSubscriber` wrapper component, and the
-`withAmbient` higher-order component.
+There are two ways to use Ambient with React: the `<ambient.react>` wrapper component, and the
+`ambient.connect` higher-order component.
 
-#### `<AmbientSubscriber>` wrapper component
+#### `<ambient.react>` wrapper component
 
-The `AmbientSubscriber` wrapper component creates an element that will re-render its 
+The `<ambient.react>` wrapper component creates an element that will re-render its 
 contents when the state changes. This is slightly simpler to use than the higher-order component,
 but it doesn't work with your component's lifecycle methods (e.g. `componentDidUpdate` will not be 
 called because of a change the in Ambient state).
@@ -140,35 +139,54 @@ The only child of the component must be a method that receives the current state
 a React node:
 
 ```jsx
- <AmbientSubscriber store={ambient} on={state => state.counter}>
+ const ambient = new Ambient();
+ 
+ ...
+ 
+ <ambient.react to={state => state.counter}>
    {state => (
      <div>Counter value: {state.counter}</div>
    )}
- </AmbientSubscriber>
+ </ambient.react>
 ```
 
-The child function will be invoked whenever the state updates according to the `on` 
+The child function will be invoked whenever the state updates according to the `to` 
 comparison callback.
 
-The `store` prop is the Ambient store instance you want to subscribe to.
-
-The `on` prop is the comparison function that determines which part of the store to watch for changes. 
+The `to` prop is the comparison function that determines which part of the store to watch for changes. 
 See [on comparing Ambient states](#on-comparing-ambient-states) for details.
 
 
-#### `withAmbient` higher-order component
+#### `ambient.connect` higher-order component
 
-`withAmbient` is a higher-order component that passes the Ambient state as a prop to your 
+`ambient.connect` is a higher-order component that passes the Ambient state as a prop to your 
 component, allowing you to respond to changes using `componentDidUpdate` and other lifecycle 
 methods. 
 
-- `withAmbient(ambient: Ambient, compare: (state) => any)(Component)`
+- `ambient.connect(compare: (state) => any)(Component)`
 
-    This is a typical higher-order component function that accepts two parameters: the Ambient
-    store instance, and a comparison method. Your component 
-    will receive the entire state object as `this.props.ambient`, but will only be re-rendered 
-    when the comparison function returns a non-equivalent value (see 
-    [on comparing Ambient states](#on-comparing-ambient-states) for details).
+    This is a typical higher-order component function. `ambient.connect` is a method on your Ambient
+    store instance, and accepts a comparison method as the only parameter. The return value
+    is a higher-order component wrapper function, to which you will pass your React component
+    and receive a new, "connected" component. 
+    
+    Ambient will then trigger a prop update when the store changes according to your comparison 
+    function (see [on comparing Ambient states](#on-comparing-ambient-states) for details).
+    Your component will receive the entire state object as `this.props.ambient`. 
+    
+    ```typescript jsx
+    const ambient = createAmbient({ counter: 0 });
+    
+    class MyComponent extends React.Component {
+      render() { 
+        return (
+          <div>Counter value: {this.props.ambient.counter}</div>        
+        )
+      }
+    }
+  
+    export default ambient.connect(state => state.counter)(MyComponent);
+    ```
 
 
 ### Using without React
@@ -177,19 +195,32 @@ It is possible (and easy) to use Ambient without React. This involves manually s
 and unsubscribing to the store using callback and comparison methods, and manually retrieving
 the current state if necessary.
 
-- `ambient.subscribe(callback: (state, prevState) => void, compare: (state) => any)`
+- `ambient.on(compare: (state) => any, callback: (state, prevState) => void)`
  
     Subscribes to state changes. This is a manual subscription that is not necessary for 
     usage with React. If you are using Ambient with React, you probably don't need to use this.
     
-    `callback` is invoked with two parameters: the current (new) state, and the previous 
-    state.
-    
     `compare` is a comparison method that determines what part of the state to listen for changes 
     (see [on comparing Ambient states](#on-comparing-ambient-states) for details).
     
-    See [examples](#manual-api-no-react) for usage.
+    `callback` is invoked with two parameters: the current (new) state, and the previous 
+    state.
     
+    ```typescript
+    const ambient = createAmbient({ counter: 0 });
+    ambient.on(
+      state => state.counter,
+      state => alert('Counter changed to ' + state.counter)
+    );
+    ```
+    
+    See [examples](#manual-api-no-react) for more usage.
+    
+- `ambient.off(callback: (state, prevState) => void)`
+
+    Unsubscribes from state changes by removing the listener (which was previously passed to
+    `ambient.on`).
+
 - `ambient.get()`
 
     Returns the current value (the "state") of the Ambient store. Note that this clones the state 
@@ -206,11 +237,11 @@ calls for a "comparison" method, you should provide a function that accepts the 
 and returns only the part for which you wish to subscribe or react to changes.
 
 ```typescript jsx
-ambient.subscribe(state => { /* do something */ }, state => state.some.property)
+ambient.on(state => state.some.property, state => { /* do something */ })
 
 // or
 
-<AmbientSubscriber store={ambient} on={state => state.some.property}>
+<ambient.react to={state => state.some.property}>
   ...
 ```
 
@@ -225,7 +256,7 @@ if they contain the same key/value pairs or entries).
 
 Take a look at the [Codepen](https://codepen.io/brombal/pen/gZmeYL) for a working sample.
 
-### React wrapper component (`AmbientSubscriber`)
+### React wrapper component (`<ambient.react>`)
 
 See the [example](#example) above for this use case.
 
@@ -233,10 +264,10 @@ See the [example](#example) above for this use case.
 ### React higher-order component (`withAmbient`)
 
 ```typescript jsx
-import Ambient, { withAmbient } from 'ambient';
+import createAmbient from 'ambient';
 
 // Create an Ambient instance
-const ambient = new Ambient({
+const ambient = createAmbient({
   counter: 0,
   user: {
     name: "Example",
@@ -264,7 +295,7 @@ class MyComponent extends React.Component {
   }
 }
 
-const MyComponentWithAmbient = withAmbient(ambient, state => state.counter)(MyComponent)
+const MyComponentWithAmbient = ambient.connect(state => state.counter)(MyComponent);
 ```
 
 
@@ -272,10 +303,10 @@ const MyComponentWithAmbient = withAmbient(ambient, state => state.counter)(MyCo
 ### Manual API (no React)
 
 ```typescript
-import Ambient, { AmbientSubscriber } from 'ambient';
+import createAmbient from 'ambient';
 
 // Create an Ambient instance
-const ambient = new Ambient({
+const ambient = createAmbient({
   counter: 0,
   user: {
     name: "Example",
@@ -284,11 +315,11 @@ const ambient = new Ambient({
 });
 
 // Listen to changes in the counter value
-ambient.subscribe(
+ambient.on(
+  state => state.counter,         // The comparison callback determines what to listen for
   state => {                      // A callback which receives the entire state object
     console.log(state.counter);   // and is invoked whenever the counter value changes
-  }, 
-  state => state.counter          // The comparison callback determines what to listen for
+  },
 );
 
 // Increase the counter. This will invoke the subscription callback above.
@@ -297,11 +328,11 @@ ambient.update(state => {
 });
 
 // Listen to changes in the user value
-ambient.subscribe(
+ambient.on(
+  state => state.user,            // Will respond to any changes in user properties
   state => {
     console.log(state.user);
-  }, 
-  state => state.user             // Will respond to any changes in user properties
+  }
 );
 
 // Change the user's name. This will invoke the user subscription callback,

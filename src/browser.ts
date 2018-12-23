@@ -1,11 +1,10 @@
-import Ambient, { AmbientSubscriber, withAmbient } from './ambient';
+import createAmbient from './ambient';
+import './react';
 
 declare global {
   interface Window {
-    Ambient: any;
+    createAmbient: any;
   }
 }
 
-window.Ambient = Ambient;
-window.Ambient.AmbientSubscriber = AmbientSubscriber;
-window.Ambient.withAmbient = withAmbient;
+window.createAmbient = createAmbient;

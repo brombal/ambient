@@ -1,16 +1,16 @@
 {
   "name": "ambient",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Global state management for React or whatever",
   "main": "dist/ambient.js",
   "repository": "git@github.com:brombal/ambient.git",
   "scripts": {
     "clean": "rm -rf ./dist",
-    "build": "npm run build:es5 && npm run build:es6 && npm run build:browser && npm run build:declarations",
+    "build": "npm run build:es5 && npm run build:es6 && npm run build:browser",
     "build:es5": "tsc -m commonjs --target es5 --outDir dist/es5",
     "build:es6": "tsc -m es6 --target es6 --outDir dist",
     "build:browser": "webpack --mode production",
-    "build:declarations": "tsc -d --declarationDir ./dist --emitDeclarationOnly",
+    "build:declarations": "tsc -d --declarationDir ./__declarations --emitDeclarationOnly",
     "test": "jest && jest-coverage-badges"
   },
   "author": "Alex Brombal",

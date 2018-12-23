@@ -1,12 +1,24 @@
 import compare from './compare';
 import clone from './clone';
 import applyChanges from './applyChanges';
-export { AmbientSubscriber, withAmbient } from './ambient-react';
 
 export type AmbientStateMapper<T> = (state: T) => any;
 type AmbientStateAction<T> = (state: T, prevState: T) => void;
 
-export default class Ambient<State> {
+export interface IAmbient<State> {
+  get(): State;
+  on(map: AmbientStateMapper<State>, action: AmbientStateAction<State>): void;
+  off(action: AmbientStateAction<State>): void;
+  reset(): void;
+  update(updater: AmbientStateAction<State>, quiet?: boolean): void;
+  awaiter(map: AmbientStateMapper<State>, check: AmbientStateMapper<State>): Promise<void>;
+}
+
+export default function createAmbient<State>(state: State = {} as any): IAmbient<State> {
+  return (new Ambient<State>(state) as any) as IAmbient<State>;
+}
+
+export class Ambient<State> {
   currentState: State;
   listeners: { map: AmbientStateMapper<State>, action: AmbientStateAction<State> }[] = [];
 
@@ -31,11 +43,11 @@ export default class Ambient<State> {
     }
   }
 
-  subscribe(action: AmbientStateAction<State>, map: AmbientStateMapper<State> = null): void {
+  on(map: AmbientStateMapper<State>, action: AmbientStateAction<State>): void {
     this.listeners.push({ map, action });
   }
 
-  unsubscribe(action: AmbientStateAction<State>): void {
+  off(action: AmbientStateAction<State>): void {
     this.listeners = this.listeners.filter(fn => fn.action !== action);
   }
 
@@ -51,12 +63,12 @@ export default class Ambient<State> {
   /**
    * Returns a Promise that resolves when `check` returns anything other than undefined. `check` is called any time the
    * state updates and changes according to `map`.
+   * @param map The method that determines if the state has updated. See Ambient#on().
    * @param check The method to call when the state updates. If it returns any value other than undefined, the Promise will resolve.
-   * @param map The method that determines if the state has updated. See Ambient#subscribe().
    */
-  awaiter(check: AmbientStateMapper<State>, map?: AmbientStateMapper<State>): Promise<void> {
+  awaiter(map: AmbientStateMapper<State>, check: AmbientStateMapper<State>): Promise<void> {
     return new Promise(resolve => {
-      this.subscribe(state => {
+      this.on(state => {
         const result = check(state);
         if (result !== undefined)
           resolve(result);

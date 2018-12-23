@@ -1,6 +1,7 @@
 {
   "files": [
-    "src/ambient.ts"
+    "src/ambient.ts",
+    "src/react.tsx"
   ],
   "compilerOptions": {
     "noImplicitAny": false,
