@@ -2,6 +2,7 @@ import * as React from 'react';
 import createAmbient from '../ambient';
 import '../react';
 import * as renderer from 'react-test-renderer';
+import { AmbientConnectProps } from "../react";
 
 
 test('content changes when ambient state is updated', () => {
@@ -50,8 +51,10 @@ test('HOC', () => {
 
   const mockFn = jest.fn();
 
+  interface MyComponentProps { foo: string, ambient?: { a: number, b: number } }
+
   const MyAmbientListener = store.connect(state => state.a)(
-    class MyComponent extends React.Component<any> {
+    class MyComponent extends React.Component<MyComponentProps> {
       componentDidUpdate = mockFn;
 
       render() {

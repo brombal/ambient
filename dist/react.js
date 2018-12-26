@@ -1,5 +1,8 @@
 import * as React from 'react';
 import { Ambient } from "./ambient";
+/**
+ * This has to be defined as a getter method so that `this` can be used correctly.
+ */
 Object.defineProperty(Ambient.prototype, 'react', {
     get: function () {
         const ambient = this;

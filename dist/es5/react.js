@@ -26,6 +26,9 @@ var __assign = (this && this.__assign) || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var ambient_1 = require("./ambient");
+/**
+ * This has to be defined as a getter method so that `this` can be used correctly.
+ */
 Object.defineProperty(ambient_1.Ambient.prototype, 'react', {
     get: function () {
         var ambient = this;

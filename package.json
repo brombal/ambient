@@ -5,18 +5,20 @@
   "main": "dist/ambient.js",
   "repository": "git@github.com:brombal/ambient.git",
   "scripts": {
-    "clean": "rm -rf ./dist",
-    "build": "npm run build:es5 && npm run build:es6 && npm run build:browser",
+    "clean": "rm -rf ./dist && rm -rf ./__declarations",
+    "build": "npm run clean && npm run build:es5 && npm run build:es6 && npm run build:browser && npm run build:declarations",
     "build:es5": "tsc -m commonjs --target es5 --outDir dist/es5",
     "build:es6": "tsc -m es6 --target es6 --outDir dist",
     "build:browser": "webpack --mode production",
-    "build:declarations": "tsc -d --declarationDir ./__declarations --emitDeclarationOnly",
+    "build:declarations": "tsc -d --declarationDir ./__declarations --emitDeclarationOnly && cp ./__declarations/ambient.d.ts ./index.d.ts && cp ./__declarations/react.d.ts ./",
     "test": "jest && jest-coverage-badges"
   },
   "author": "Alex Brombal",
   "license": "MIT",
   "dependencies": {
-    "react": "^16.5.0"
+    "@types/react-redux": "^6.0.11",
+    "react": "^16.5.0",
+    "react-redux": "^6.0.0"
   },
   "devDependencies": {
     "@types/jest": "^23.3.10",
