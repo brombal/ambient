@@ -25,11 +25,11 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
-var ambient_1 = require("./ambient");
+var index_1 = require("./index");
 /**
  * This has to be defined as a getter method so that `this` can be used correctly.
  */
-Object.defineProperty(ambient_1.Ambient.prototype, 'react', {
+Object.defineProperty(index_1.Index.prototype, 'react', {
     get: function () {
         var ambient = this;
         return /** @class */ (function (_super) {
@@ -54,7 +54,7 @@ Object.defineProperty(ambient_1.Ambient.prototype, 'react', {
         }(React.Component));
     }
 });
-ambient_1.Ambient.prototype.connect = function (on) {
+index_1.Index.prototype.connect = function (on) {
     var ambient = this;
     return function (Component) { return function (props) {
         return (React.createElement(ambient.react, { to: on }, function (state) { return (React.createElement(Component, __assign({}, props, { ambient: state }))); }));

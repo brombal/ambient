@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Ambient } from "./ambient";
+import { Index } from "./index";
 /**
  * This has to be defined as a getter method so that `this` can be used correctly.
  */
-Object.defineProperty(Ambient.prototype, 'react', {
+Object.defineProperty(Index.prototype, 'react', {
     get: function () {
         const ambient = this;
         return class AmbientSubscriber extends React.Component {
@@ -25,7 +25,7 @@ Object.defineProperty(Ambient.prototype, 'react', {
         };
     }
 });
-Ambient.prototype.connect = function (on) {
+Index.prototype.connect = function (on) {
     const ambient = this;
     return (Component) => (props) => {
         return (React.createElement(ambient.react, { to: on }, state => (React.createElement(Component, Object.assign({}, props, { ambient: state })))));

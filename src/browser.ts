@@ -1,4 +1,4 @@
-import createAmbient from './ambient';
+import createAmbient from './index';
 import './react';
 
 declare global {

@@ -1,4 +1,4 @@
-import createAmbient from "../ambient";
+import createAmbient from "../index";
 
 test('initial state', () => {
   const ambient1 = createAmbient();

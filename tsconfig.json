@@ -1,6 +1,6 @@
 {
   "files": [
-    "src/ambient.ts",
+    "src/index.ts",
     "src/react.tsx"
   ],
   "compilerOptions": {

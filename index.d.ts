@@ -9,7 +9,7 @@ export interface IAmbient<State> {
     awaiter(map: AmbientStateMapper<State>, check: AmbientStateMapper<State>): Promise<void>;
 }
 export default function createAmbient<State>(state?: State): IAmbient<State>;
-export declare class Ambient<State> {
+export declare class Index<State> {
     private initialState;
     currentState: State;
     listeners: {

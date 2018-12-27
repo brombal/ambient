@@ -2,9 +2,9 @@ import compare from './compare';
 import clone from './clone';
 import applyChanges from './applyChanges';
 export default function createAmbient(state = {}) {
-    return new Ambient(state);
+    return new Index(state);
 }
-export class Ambient {
+export class Index {
     constructor(initialState = {}) {
         this.initialState = initialState;
         this.listeners = [];
@@ -56,4 +56,4 @@ export class Ambient {
     }
 }
 ;
-//# sourceMappingURL=ambient.js.map
+//# sourceMappingURL=index.js.map

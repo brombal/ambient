@@ -15,10 +15,10 @@ export interface IAmbient<State> {
 }
 
 export default function createAmbient<State>(state: State = {} as any): IAmbient<State> {
-  return (new Ambient<State>(state) as any) as IAmbient<State>;
+  return (new Index<State>(state) as any) as IAmbient<State>;
 }
 
-export class Ambient<State> {
+export class Index<State> {
   currentState: State;
   listeners: { map: AmbientStateMapper<State>, action: AmbientStateAction<State> }[] = [];
 

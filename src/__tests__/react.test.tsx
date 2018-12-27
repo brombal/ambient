@@ -1,5 +1,5 @@
 import * as React from 'react';
-import createAmbient from '../ambient';
+import createAmbient from '../index';
 import '../react';
 import * as renderer from 'react-test-renderer';
 import { AmbientConnectProps } from "../react";

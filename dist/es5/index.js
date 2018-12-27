@@ -5,20 +5,20 @@ var clone_1 = require("./clone");
 var applyChanges_1 = require("./applyChanges");
 function createAmbient(state) {
     if (state === void 0) { state = {}; }
-    return new Ambient(state);
+    return new Index(state);
 }
 exports.default = createAmbient;
-var Ambient = /** @class */ (function () {
-    function Ambient(initialState) {
+var Index = /** @class */ (function () {
+    function Index(initialState) {
         if (initialState === void 0) { initialState = {}; }
         this.initialState = initialState;
         this.listeners = [];
         this.currentState = initialState;
     }
-    Ambient.prototype.get = function () {
+    Index.prototype.get = function () {
         return clone_1.default(this.currentState);
     };
-    Ambient.prototype.set = function (nextState, quiet) {
+    Index.prototype.set = function (nextState, quiet) {
         var _this = this;
         var prevState = this.currentState;
         this.currentState = nextState;
@@ -31,16 +31,16 @@ var Ambient = /** @class */ (function () {
             });
         }
     };
-    Ambient.prototype.on = function (map, action) {
+    Index.prototype.on = function (map, action) {
         this.listeners.push({ map: map, action: action });
     };
-    Ambient.prototype.off = function (action) {
+    Index.prototype.off = function (action) {
         this.listeners = this.listeners.filter(function (fn) { return fn.action !== action; });
     };
-    Ambient.prototype.reset = function () {
+    Index.prototype.reset = function () {
         this.currentState = this.initialState;
     };
-    Ambient.prototype.update = function (updater, quiet) {
+    Index.prototype.update = function (updater, quiet) {
         if (quiet === void 0) { quiet = false; }
         var nextState = applyChanges_1.default(this.currentState, updater);
         if (nextState !== this.currentState)
@@ -52,7 +52,7 @@ var Ambient = /** @class */ (function () {
      * @param map The method that determines if the state has updated. See Ambient#on().
      * @param check The method to call when the state updates. If it returns any value other than undefined, the Promise will resolve.
      */
-    Ambient.prototype.awaiter = function (map, check) {
+    Index.prototype.awaiter = function (map, check) {
         var _this = this;
         return new Promise(function (resolve) {
             _this.on(function (state) {
@@ -62,8 +62,8 @@ var Ambient = /** @class */ (function () {
             }, map);
         });
     };
-    return Ambient;
+    return Index;
 }());
-exports.Ambient = Ambient;
+exports.Index = Index;
 ;
-//# sourceMappingURL=ambient.js.map
+//# sourceMappingURL=index.js.map

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AmbientStateMapper } from "./ambient";
+import { AmbientStateMapper } from "./index";
 /**
  * Infers prop type from component C
  */
@@ -43,7 +43,7 @@ interface AmbientReactProps<State> {
 export interface AmbientConnectProps<State> {
     ambient: State;
 }
-declare module "./ambient" {
+declare module "./index" {
     interface IAmbient<State> {
         react: React.ComponentClass<AmbientReactProps<State>>;
         connect: (on: AmbientStateMapper<State>) => (<T extends React.ComponentType>(Component: T) => ComponentWithoutProps<T, AmbientConnectProps<State>>);
