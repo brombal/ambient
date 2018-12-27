@@ -35,6 +35,11 @@ $ npm install --save ambientjs
 ```
 
 
+```typescript jsx
+import createAmbient from 'ambient';
+import 'ambient/react'; // Adds React functionality
+````
+
 ## Example
 
 This example demonstrates usage with the `<ambient.react>` wrapper component, similar to how
@@ -44,10 +49,11 @@ See [more examples](#more-examples) below for additional ways to use Ambient,
 or take a look at the [Codepen](https://codepen.io/brombal/pen/aPWEzv) for a working sample.
  
 ```typescript jsx
-import Ambient from 'ambient';
+import createAmbient from 'ambient';
+import 'ambient/react'; // Adds React functionality
 
 // Create an Ambient instance
-const ambient = new Ambient({
+const ambient = createAmbient({
   counter: 0,
   user: {
     name: "Example",
@@ -57,7 +63,7 @@ const ambient = new Ambient({
 
 // Create a convenience method to update the counter. Not mandatory, but good practice.
 function increaseCounter() {
-  ambient.update(state => state.counter++);
+  ambient.update(state => { state.counter++ });
 }
 
 class MyComponent extends React.Component {
@@ -128,6 +134,12 @@ better for your application.
 There are two ways to use Ambient with React: the `<ambient.react>` wrapper component, and the
 `ambient.connect` higher-order component.
 
+To use Ambient with React, you need to import the `ambient/react` module separately:
+
+```typescript
+import 'ambient/react';
+```
+
 #### `<ambient.react>` wrapper component
 
 The `<ambient.react>` wrapper component creates an element that will re-render its 
@@ -139,7 +151,7 @@ The only child of the component must be a method that receives the current state
 a React node:
 
 ```jsx
- const ambient = new Ambient();
+ const ambient = createAmbient();
  
  ...
  
