@@ -5,20 +5,21 @@ import applyChanges from './applyChanges';
 export type AmbientStateMapper<T> = (state: T) => any;
 type AmbientStateAction<T> = (state: T, prevState: T) => void;
 
+export type AmbientUnsubscriber = () => void;
+
 export interface IAmbient<State> {
   get(): State;
-  on(map: AmbientStateMapper<State>, action: AmbientStateAction<State>): void;
-  off(action: AmbientStateAction<State>): void;
+  on(map: AmbientStateMapper<State>, action: AmbientStateAction<State>): AmbientUnsubscriber;
   reset(): void;
   update(updater: AmbientStateAction<State>, quiet?: boolean): void;
   awaiter(map: AmbientStateMapper<State>, check: AmbientStateMapper<State>): Promise<void>;
 }
 
 export default function createAmbient<State>(state: State = {} as any): IAmbient<State> {
-  return (new Index<State>(state) as any) as IAmbient<State>;
+  return (new Ambient<State>(state) as any) as IAmbient<State>;
 }
 
-export class Index<State> {
+export class Ambient<State> {
   currentState: State;
   listeners: { map: AmbientStateMapper<State>, action: AmbientStateAction<State> }[] = [];
 
@@ -43,12 +44,11 @@ export class Index<State> {
     }
   }
 
-  on(map: AmbientStateMapper<State>, action: AmbientStateAction<State>): void {
+  on(map: AmbientStateMapper<State>, action: AmbientStateAction<State>): AmbientUnsubscriber {
     this.listeners.push({ map, action });
-  }
-
-  off(action: AmbientStateAction<State>): void {
-    this.listeners = this.listeners.filter(fn => fn.action !== action);
+    return () => {
+      this.listeners = this.listeners.filter(fn => fn.action !== action);
+    };
   }
 
   reset(): void {
@@ -62,7 +62,7 @@ export class Index<State> {
 
   /**
    * Returns a Promise that resolves when `check` returns anything other than undefined. `check` is called any time the
-   * state updates and changes according to `map`.
+   * state changes according to `map`.
    * @param map The method that determines if the state has updated. See Ambient#on().
    * @param check The method to call when the state updates. If it returns any value other than undefined, the Promise will resolve.
    */

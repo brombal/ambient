@@ -1,6 +1,6 @@
 {
   "name": "ambient",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Global state management for React or whatever",
   "main": "dist/index.js",
   "repository": "git@github.com:brombal/ambient.git",

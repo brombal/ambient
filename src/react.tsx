@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IAmbient, AmbientStateMapper, Index } from "./index";
+import { IAmbient, AmbientStateMapper, Ambient, AmbientUnsubscriber } from "./index";
 
 /**
  * Infers prop type from component C
@@ -69,16 +69,18 @@ declare module "./index" {
 /**
  * This has to be defined as a getter method so that `this` can be used correctly.
  */
-Object.defineProperty(Index.prototype, 'react', {
+Object.defineProperty(Ambient.prototype, 'react', {
   get: function () {
     const ambient = this;
     return class AmbientSubscriber<State> extends React.Component<AmbientReactProps<State>> {
+      unsubscribeAmbient: AmbientUnsubscriber;
+
       componentDidMount() {
-        ambient.on(this.props.to, this.onUpdate);
+        this.unsubscribeAmbient = ambient.on(this.props.to, this.onUpdate);
       }
 
       componentWillUnmount() {
-        ambient.off(this.onUpdate);
+        this.unsubscribeAmbient();
       }
 
       onUpdate = () => {
@@ -92,7 +94,7 @@ Object.defineProperty(Index.prototype, 'react', {
   }
 });
 
-(Index.prototype as any).connect = function<AmbientState>(on: AmbientStateMapper<AmbientState>) {
+(Ambient.prototype as any).connect = function<AmbientState>(on: AmbientStateMapper<AmbientState>) {
   const ambient = this;
   return (Component: React.ComponentType<AmbientConnectProps<any>>) => (props) => {
     return (

@@ -19,7 +19,7 @@ test('updater', () => {
 test('subscribe & unsubscribe', () => {
   const ambient = createAmbient({ a: 1 });
   const subscription = jest.fn();
-  ambient.on(state => state, subscription);
+  const unsubscribe = ambient.on(state => state, subscription);
   ambient.update(state => {
     state.a = 2;
   });
@@ -35,7 +35,7 @@ test('subscribe & unsubscribe', () => {
   }, true);
   expect(subscription).toHaveBeenCalledTimes(1);
 
-  ambient.off(subscription);
+  unsubscribe();
   ambient.update(state => {
     state.a = 4;
   });
